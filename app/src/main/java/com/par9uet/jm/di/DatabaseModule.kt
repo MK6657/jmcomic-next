@@ -18,7 +18,10 @@ val databaseModule = module {
             androidContext(),
             AppDatabase::class.java,
             "app_database"
-        ).fallbackToDestructiveMigration(false).build()
+        )
+            .addMigrations(AppDatabase.MIGRATION_2_3)
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
     single { get<AppDatabase>().downloadComicDao() }
     single { DownloadManager(get(), get(), get(), get()) }

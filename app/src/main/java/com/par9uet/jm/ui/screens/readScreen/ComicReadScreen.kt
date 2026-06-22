@@ -1,4 +1,4 @@
-﻿package com.par9uet.jm.ui.screens.readScreen
+package com.par9uet.jm.ui.screens.readScreen
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
@@ -322,13 +322,7 @@ fun ComicReadScreen(
                     currentChapterId = null,
                     onDismiss = { activeDialog = null },
                     onSelect = { chapter ->
-                        downloadManager.downloadComic(
-                            Comic.create(
-                                id = chapter.id,
-                                name = chapter.name.ifBlank { currentComic.name },
-                                authorList = currentComic.authorList
-                            )
-                        )
+                        downloadManager.downloadComicChapters(currentComic, listOf(chapter))
                         activeDialog = null
                     }
                 )
@@ -566,4 +560,3 @@ private fun ChapterPickerDialog(
         }
     )
 }
-

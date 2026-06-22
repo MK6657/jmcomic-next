@@ -28,6 +28,9 @@ interface DownloadComicDao {
     @Query("SELECT * FROM download_comics WHERE status IN ('pending', 'downloading', 'paused') ORDER BY createTime DESC")
     fun getActiveList(): PagingSource<Int, DownloadComic>
 
+    @Query("SELECT * FROM download_comics ORDER BY createTime DESC")
+    fun observeAllList(): Flow<List<DownloadComic>>
+
     @Query("SELECT * FROM download_comics WHERE status = 'complete' ORDER BY createTime DESC")
     fun observeCompleteList(): Flow<List<DownloadComic>>
 

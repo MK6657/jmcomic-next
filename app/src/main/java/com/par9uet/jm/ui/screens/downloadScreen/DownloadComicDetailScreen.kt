@@ -177,11 +177,18 @@ fun DownloadComicDetailScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(top = 10.dp),
-                    text = data.name,
+                    text = data.parentName.ifBlank { data.name },
                     fontSize = 18.sp,
                     lineHeight = 1.5.em,
                     fontWeight = FontWeight.Bold,
                 )
+                downloadChapterLabel(data)?.let { chapterLabel ->
+                    Text(
+                        text = chapterLabel,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                     data.authorList.forEach {
                         key(it) {
@@ -292,6 +299,20 @@ private fun CachedInfoItem(
             Text(text = label, style = MaterialTheme.typography.labelMedium)
             Text(text = value, style = MaterialTheme.typography.bodyMedium)
         }
+    }
+}
+
+private fun downloadChapterLabel(comic: DownloadComic): String? {
+    val hasChapterMetadata = comic.parentId != comic.id ||
+        comic.chapterCount > 1 ||
+        comic.chapterName.isNotBlank()
+    if (!hasChapterMetadata) return null
+
+    val numberText = "第" + (comic.chapterIndex + 1) + "话"
+    return if (comic.chapterName.isBlank()) {
+        numberText
+    } else {
+        numberText + " · " + comic.chapterName
     }
 }
 
